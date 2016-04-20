@@ -1,0 +1,53 @@
+<?php
+function Chmail()
+{	
+	require_once 'connection.php';
+
+	$link = mysqli_connect($host, $user, $password, $database) 
+	    or die("Ошибка " . mysqli_error($link)); 
+	     
+	$query ="SELECT email FROM users";
+	 
+	$result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link)); 
+	if($result)
+	{
+		$i=0;
+	    while ($row = mysqli_fetch_row($result)) {
+	        $rez[$i] = $row[0];
+	        $i += 1;
+	    }
+	    mysqli_free_result($result);
+	    $str = '';
+	    foreach ($rez as $s) {
+	    	$str = $str . $s . " ";
+	    }
+
+	}
+	mysqli_close($link);
+	return $str;
+}
+
+function Chpass($idx)
+{	
+	require_once 'connection.php';
+
+	//$link1 = mysqli_connect($host, $user, $password, $database) 
+	//	or die("Ошибка " . mysqli_error($link)); 
+	     
+	$query ="SELECT pass FROM users where email='$idx'";
+	 
+	//$result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link)); 
+	// if($result)
+	// {
+	// 	$i=0;
+	//     while ($row = mysqli_fetch_row($result)) {
+	//         $rez[$i] = $row[0];
+	//         $i += 1;
+	//     }
+	//     mysqli_free_result($result);
+	// }
+	//mysqli_close($link);
+	//echo("$result");
+	return ;
+}
+?>
