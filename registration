@@ -1,0 +1,156 @@
+<html>
+<head>
+<title>Веб-сайт</title>
+<meta charset="utf-8">
+</head>
+<?php require_once 'php/Checkmail.php';?>
+<script>
+var name=false, surname=false, email=false, pass=false, repass=false;
+function CheckN()
+{
+	var t = document.getElementById("name");
+	if(t.value == undefined || t.value == '')
+	{
+		error("name");
+		name = false;
+	}
+	else
+	{	
+		good("name");
+		name = true;
+	}
+buttON(name, surname, email, pass, repass);
+}
+
+function CheckS()
+{
+	var t = document.getElementById("surname");
+	if(t.value == undefined || t.value == '')
+	{
+		error("surname");
+		surname = false;
+	}
+	else
+	{	
+		good("surname");
+		surname = true;
+	}	
+buttON(name, surname, email, pass, repass);
+}
+
+function CheckE()
+{
+	var t = document.getElementById("email");
+
+	var phptest = '<?php echo Chmail();?>';
+	phptest = phptest.split(" ");
+	for(var i = 0; i < phptest.length -1; i++)
+	{	
+		if(phptest[i] == t.value)
+		{
+			error("email");
+			document.getElementById("emailnotes").style.display = "block";
+			email = false;
+			buttON(name, surname, email, pass, repass);
+			return;
+		}
+		else
+			document.getElementById("emailnotes").style.display = "none";
+	}
+
+	if(t.value == undefined || t.value == '' || t.value.indexOf("@") == -1)
+	{
+		error("email");
+		email = false;
+		buttON(name, surname, email, pass, repass);
+		return;
+	}
+	else
+	{	var x = t.value.split("@");
+		if(x.length > 2 || x[1].indexOf('.') == -1)
+		{
+			error("email");
+			email = false;
+			buttON(name, surname, email, pass, repass);
+			return;
+		}
+		else
+		{
+			var x1 = x[1].split(".");
+			if(x1.length > 2 || x1[1].length == 0)
+			{
+				error("email");
+				email = false;
+				buttON(name, surname, email, pass, repass);
+				return;
+			}
+		}
+		good("email");
+		email = true;	
+	}
+buttON(name, surname, email, pass, repass);
+}
+
+function CheckP()
+{
+	var t = document.getElementById("password").value;
+	var t1 = document.getElementById("re_password").value;
+	if(t != t1 || t == '' || t1 == '')
+	{	
+		error("re_password");
+		error("password");
+		pass = false;
+		repass = false;
+	}
+	else
+	{	
+		good("re_password");
+		good("password");
+		pass = true;
+		repass = true;
+	}
+buttON(name, surname, email, pass, repass);	
+}
+
+function buttON(q,w,e,r,t)
+{
+	if(q == 'true' && w == true && e == true && r == true && t == true)
+	{
+		document.getElementById("submitButton").style = "pointer-events: auto";
+	}
+	else
+	{
+		document.getElementById("submitButton").style = "pointer-events: none";
+	}
+}
+
+function error(x)
+{
+	var t = document.getElementById(x);
+	t.style.border = "1px solid #ff4444";
+}
+function good(x)
+{
+	var t = document.getElementById(x);
+	t.style.border = "1px solid #aaa";	
+}
+</script>
+<body>
+<h3>Регистрация</h3>
+<form onsubmit="" method="POST" action="php/registration.php">
+	Имя: <input type="text" name="name" id="name" placeholder="Имя" onblur="CheckN()"/><br><br>
+	Фамилия: <input type="text" name="surname"  id="surname" placeholder="Фамилия" onblur="CheckS()"/><br><br>
+    <div><p style="position:relative; float:left;">Email: </p><input type="text" name="email" id="email" placeholder="youremail@gmail.com" onblur="CheckE()" style="position:relative; float:left;"/> <p id="emailnotes" style="position:relative; float:left; display:none;">Такой мейл уже существует </p></div><br><br><br><br>
+    Пароль: <input type="password" name="password" id="password" placeholder="Пароль" onkeyup="CheckP()"/><br><br>
+    Повторите пароль: <input type="password" name="re_password" id="re_password" placeholder="Повторите пароль" onkeyup="CheckP()"/><br><br>
+    <input type="submit" id="submitButton" name="subm" value="Войти" >
+</form>
+<script> 
+	if(document.getElementById("name").value != '') CheckN(); 
+	if(document.getElementById("surname").value != '') CheckS(); 
+	if(document.getElementById("email").value != '') CheckE();
+	if(document.getElementById("email").value != '') CheckP();
+	buttON(name, surname, email, pass, repass);	
+</script>
+</body>
+</html>
